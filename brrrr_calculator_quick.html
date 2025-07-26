@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRRRR Quick Investment Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-group input[type="text"],
+        .input-group input[type="number"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .input-group input[type="number"]::-webkit-inner-spin-button,
+        .input-group input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .input-group input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .output-section {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .output-group {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .output-group label {
+            font-weight: bold;
+            flex: 1;
+        }
+        .output-group span {
+            flex: 1;
+            text-align: right;
+            font-size: 1.1em;
+            color: #007bff;
+        }
+        .section-header {
+            background-color: #e2e6ea;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BRRRR Quick Investment Calculator</h1>
+
+        <div class="section-header">Property & Initial Investment (Quick)</div>
+        <div class="input-group">
+            <label for="propertyAddress">Property Address/Name:</label>
+            <input type="text" id="propertyAddress" value="456 Elm St">
+        </div>
+        <div class="input-group">
+            <label for="purchasePrice">Purchase Price (K):</label>
+            <input type="text" id="purchasePrice" value="120" placeholder="e.g., 120 or 120k">
+        </div>
+        <div class="input-group">
+            <label for="rehabCost">Rehab Cost (K):</label>
+            <input type="text" id="rehabCost" value="25" placeholder="e.g., 25 or 25k">
+        </div>
+        <div class="input-group">
+            <label for="arv">After Repair Value (ARV) (K):</label>
+            <input type="text" id="arv" value="200" placeholder="e.g., 200 or 200k">
+        </div>
+
+        <div class="section-header">Timeline & Rent (Quick)</div>
+        <div class="input-group">
+            <label for="rehabPeriodLength">Rehab Period Length (Months):</label>
+            <input type="number" id="rehabPeriodLength" value="3">
+        </div>
+        <div class="input-group">
+            <label for="estimatedMonthlyRent">Estimated Monthly Rent (K):</label>
+            <input type="text" id="estimatedMonthlyRent" value="1.8" placeholder="e.g., 1.8 or 1.8k">
+        </div>
+        <div class="input-group">
+            <label for="annualPropertyTax">Annual Property Tax (K):</label>
+            <input type="text" id="annualPropertyTax" value="3" placeholder="e.g., 3 or 3k">
+        </div>
+        
+        <button onclick="calculateBRRRRQuick()">Calculate Quick BRRRR</button>
+
+        <div class="output-section">
+            <h2>Investment Summary</h2>
+            <div class="output-group"><label>Total Initial Investment:</label><span id="outputTotalInitialInvestment"></span></div>
+            <div class="output-group"><label>Hard Money Loan Amount:</label><span id="outputHardMoneyLoanAmount"></span></div>
+            <div class="output-group"><label>Monthly Interest-Only Payment (Hard Money):</label><span id="outputMonthlyInterestOnlyPaymentHML"></span></div>
+            <div class="output-group"><label>Holding Costs During Rehab:</label><span id="outputHoldingCostsDuringRehab"></span></div>
+            <div class="output-group"><label>Total Out-of-Pocket:</label><span id="outputTotalOutOfPocket"></span></div>
+            <div class="output-group"><label>Refinance Loan Amount (Loan 2):</label><span id="outputRefinanceLoanAmount"></span></div>
+            <div class="output-group"><label>Money Left from Loan 2:</label><span id="outputMoneyLeftFromLoan2"></span></div>
+            <div class="output-group"><label>Cash Left in the Deal:</label><span id="outputCashLeftInTheDeal"></span></div>
+            <div class="output-group"><label>Calculated Proposed Buying Price:</label><span id="outputProposedBuyingPrice"></span></div>
+            <div class="output-group"><label>Equity Created Based on ARV:</label><span id="outputEquityCreatedARV"></span></div>
+
+            <h2>Rental and Returns</h2>
+            <div class="output-group"><label>Monthly P&I Payment (Refinance Loan):</label><span id="outputMonthlyPIPaymentRefi"></span></div>
+            <div class="output-group"><label>Estimated Monthly Operating Expenses:</label><span id="outputMonthlyOperatingExpenses"></span></div>
+            <div class="output-group"><label>Estimated Monthly Cash Flow (After Refinance):</label><span id="outputMonthlyCashFlow"></span></div>
+            <div class="output-group"><label>Estimated Annual Cash Flow:</label><span id="outputAnnualCashFlow"></span></div>
+            <div class="output-group"><label>Cash-on-Cash Return:</label><span id="outputCashOnCashReturn"></span></div>
+        </div>
+    </div>
+
+    <script>
+        // Default values for the Quick Defaults calculator (hidden inputs)
+        const DEFAULT_CLOSING_COSTS_LOAN1 = 10000;
+        const DEFAULT_DOWN_PAYMENT_LOAN1_PERCENT = 10;
+        const DEFAULT_INTEREST_RATE_LOAN1_PERCENT = 12;
+        const DEFAULT_REFINANCE_PERCENTAGE_LOAN2 = 75;
+        const DEFAULT_INTEREST_RATE_LOAN2_PERCENT = 7;
+        const DEFAULT_LOAN_TERM_LOAN2_YEARS = 30;
+        const DEFAULT_CLOSING_COSTS_LOAN2 = 10000; // THIS HAS BEEN UPDATED TO 10000
+        const DEFAULT_ANNUAL_INSURANCE = 1800;
+        const DEFAULT_PROPERTY_MANAGEMENT_PERCENT = 0;
+        const DEFAULT_MAINTENANCE_PERCENT = 0;
+        const DEFAULT_VACANCY_PERCENT = 0;
+
+        // Function to parse monetary inputs with thousands shorthand (e.g., 30 -> 30000, 7.5 -> 7500)
+        function parseMonetaryInput(value) {
+            if (typeof value === 'string') {
+                value = value.toLowerCase().trim();
+                if (value.startsWith('$')) {
+                    return parseFloat(value.substring(1).replace(/,/g, ''));
+                }
+                if (value.endsWith('k')) {
+                    return parseFloat(value.slice(0, -1)) * 1000;
+                }
+                // New rule: If it's a number without '$' or 'k', assume thousands shorthand
+                let num = parseFloat(value);
+                if (!isNaN(num)) {
+                    return num * 1000; // Apply thousands scaling
+                }
+                return NaN; // Or handle error if not a recognized format
+            }
+            return parseFloat(value); // Fallback for direct number inputs (though typically handled by string path for text fields)
+        }
+
+        // Function for general number inputs (e.g., percentages, months)
+        function parseNumberInput(value) {
+            return parseFloat(value);
+        }
+
+        function formatCurrency(amount) {
+            return '$' + parseFloat(amount).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        function formatPercentage(value) {
+            return parseFloat(value).toFixed(2) + '%';
+        }
+
+        function calculateBRRRRQuick() {
+            // Manual Inputs - using parseMonetaryInput for currency fields
+            const purchasePrice = parseMonetaryInput(document.getElementById('purchasePrice').value);
+            const rehabCost = parseMonetaryInput(document.getElementById('rehabCost').value);
+            const arv = parseMonetaryInput(document.getElementById('arv').value);
+            const rehabPeriodLength = parseNumberInput(document.getElementById('rehabPeriodLength').value); // Not monetary
+            const estimatedMonthlyRent = parseMonetaryInput(document.getElementById('estimatedMonthlyRent').value);
+            const annualPropertyTax = parseMonetaryInput(document.getElementById('annualPropertyTax').value);
+
+            // Default Values (from hidden section) - apply parseMonetaryInput where appropriate
+            const closingCostsLoan1 = DEFAULT_CLOSING_COSTS_LOAN1; // Already a number, no parsing needed
+            const downPaymentLoan1 = DEFAULT_DOWN_PAYMENT_LOAN1_PERCENT;
+            const interestRateLoan1 = DEFAULT_INTEREST_RATE_LOAN1_PERCENT;
+            const refinancePercentageLoan2 = DEFAULT_REFINANCE_PERCENTAGE_LOAN2;
+            const interestRateLoan2 = DEFAULT_INTEREST_RATE_LOAN2_PERCENT;
+            const loanTermLoan2 = DEFAULT_LOAN_TERM_LOAN2_YEARS;
+            const closingCostsLoan2 = DEFAULT_CLOSING_COSTS_LOAN2;
+            const annualInsurance = DEFAULT_ANNUAL_INSURANCE;
+            const propertyManagement = DEFAULT_PROPERTY_MANAGEMENT_PERCENT;
+            const maintenance = DEFAULT_MAINTENANCE_PERCENT;
+            const vacancy = DEFAULT_VACANCY_PERCENT;
+
+            // --- Calculations (Same as Full Calculator) ---
+
+            // 1. Total Initial Investment
+            const totalInitialInvestment = (purchasePrice * (downPaymentLoan1 / 100)) + closingCostsLoan1;
+
+            // 2. Hard Money Loan Amount
+            const hardMoneyLoanAmount = (purchasePrice * (1 - downPaymentLoan1 / 100)) + rehabCost;
+
+            // 3. Monthly Interest-Only Payment (Hard Money)
+            const monthlyInterestOnlyPaymentHML = hardMoneyLoanAmount * (interestRateLoan1 / 100) / 12;
+
+            // 4. Holding Costs During Rehab
+            const interestDuringRehab = monthlyInterestOnlyPaymentHML * rehabPeriodLength;
+            const propertyTaxDuringRehab = (annualPropertyTax / 12) * rehabPeriodLength;
+            const insuranceDuringRehab = (annualInsurance / 12) * rehabPeriodLength;
+            const holdingCostsDuringRehab = interestDuringRehab + propertyTaxDuringRehab + insuranceDuringRehab;
+
+            // 5. Total Out-of-Pocket
+            const totalOutOfPocket = totalInitialInvestment + holdingCostsDuringRehab;
+
+            // 6. Refinance Loan Amount (Loan 2)
+            const refinanceLoanAmount = arv * (refinancePercentageLoan2 / 100);
+
+            // 7. Money Left from Loan 2 (after paying off Loan 1 and closing costs)
+            const moneyLeftFromLoan2 = refinanceLoanAmount - hardMoneyLoanAmount - closingCostsLoan2;
+
+            // 8. Cash Left in the Deal
+            const cashLeftInTheDeal = totalOutOfPocket - moneyLeftFromLoan2;
+
+            // 9. Calculated Proposed Buying Price
+            const proposedBuyingPrice = purchasePrice - cashLeftInTheDeal;
+
+            // 10. Equity Created Based on ARV
+            const equityCreatedARV = arv - refinanceLoanAmount;
+
+            // 11. Monthly P&I Payment (Refinance Loan) - using standard mortgage formula
+            const r = (interestRateLoan2 / 100) / 12; // Monthly interest rate
+            const n = loanTermLoan2 * 12; // Total number of payments
+            let monthlyPIPaymentRefi;
+            if (r === 0) { // Handle zero interest rate
+                monthlyPIPaymentRefi = refinanceLoanAmount / n;
+            } else {
+                monthlyPIPaymentRefi = refinanceLoanAmount * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+            }
+
+            // 12. Estimated Monthly Operating Expenses (Post-Rehab, excluding mortgage)
+            const monthlyPropertyTax = annualPropertyTax / 12;
+            const monthlyInsurance = annualInsurance / 12;
+            const monthlyPropertyManagement = estimatedMonthlyRent * (propertyManagement / 100);
+            const monthlyMaintenance = estimatedMonthlyRent * (maintenance / 100);
+            const monthlyVacancy = estimatedMonthlyRent * (vacancy / 100);
+            const monthlyOperatingExpenses = monthlyPropertyTax + monthlyInsurance + monthlyPropertyManagement + monthlyMaintenance + monthlyVacancy;
+
+            // 13. Estimated Monthly Cash Flow (After Refinance)
+            const monthlyCashFlow = estimatedMonthlyRent - monthlyPIPaymentRefi - monthlyOperatingExpenses;
+
+            // 14. Estimated Annual Cash Flow
+            const annualCashFlow = monthlyCashFlow * 12;
+
+            // 15. Cash-on-Cash Return
+            let cashOnCashReturn;
+            if (cashLeftInTheDeal <= 0) {
+                cashOnCashReturn = "Infinite Return";
+            } else {
+                cashOnCashReturn = (annualCashFlow / cashLeftInTheDeal) * 100;
+            }
+
+            // --- Display Results ---
+            document.getElementById('outputTotalInitialInvestment').textContent = formatCurrency(totalInitialInvestment);
+            document.getElementById('outputHardMoneyLoanAmount').textContent = formatCurrency(hardMoneyLoanAmount);
+            document.getElementById('outputMonthlyInterestOnlyPaymentHML').textContent = formatCurrency(monthlyInterestOnlyPaymentHML);
+            document.getElementById('outputHoldingCostsDuringRehab').textContent = formatCurrency(holdingCostsDuringRehab);
+            document.getElementById('outputTotalOutOfPocket').textContent = formatCurrency(totalOutOfPocket);
+            document.getElementById('outputRefinanceLoanAmount').textContent = formatCurrency(refinanceLoanAmount);
+            document.getElementById('outputMoneyLeftFromLoan2').textContent = formatCurrency(moneyLeftFromLoan2);
+            document.getElementById('outputCashLeftInTheDeal').textContent = formatCurrency(cashLeftInTheDeal);
+            document.getElementById('outputProposedBuyingPrice').textContent = formatCurrency(proposedBuyingPrice);
+            document.getElementById('outputEquityCreatedARV').textContent = formatCurrency(equityCreatedARV);
+            document.getElementById('outputMonthlyPIPaymentRefi').textContent = formatCurrency(monthlyPIPaymentRefi);
+            document.getElementById('outputMonthlyOperatingExpenses').textContent = formatCurrency(monthlyOperatingExpenses);
+            document.getElementById('outputMonthlyCashFlow').textContent = formatCurrency(monthlyCashFlow);
+            document.getElementById('outputAnnualCashFlow').textContent = formatCurrency(annualCashFlow);
+            document.getElementById('outputCashOnCashReturn').textContent = typeof cashOnCashReturn === 'string' ? cashOnCashReturn : formatPercentage(cashOnCashReturn);
+        }
+
+        // Run calculation with default values on load
+        window.onload = calculateBRRRRQuick;
+    </script>
+</body>
+</html>
