@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BRRRR Investment Calculator</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        .container {
+            max-width: 800px;
+            margin: auto;
+            background: #fff;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1, h2 {
+            color: #2c3e50;
+            text-align: center;
+            margin-bottom: 25px;
+        }
+        .input-group {
+            margin-bottom: 15px;
+        }
+        .input-group label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+        }
+        .input-group input[type="text"],
+        .input-group input[type="number"] {
+            width: calc(100% - 22px);
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            box-sizing: border-box;
+        }
+        .input-group input[type="number"]::-webkit-inner-spin-button,
+        .input-group input[type="number"]::-webkit-outer-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        .input-group input[type="number"] {
+            -moz-appearance: textfield;
+        }
+        button {
+            display: block;
+            width: 100%;
+            padding: 12px 20px;
+            background-color: #28a745;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            font-size: 18px;
+            cursor: pointer;
+            margin-top: 20px;
+            transition: background-color 0.3s ease;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        .output-section {
+            margin-top: 30px;
+            border-top: 1px solid #eee;
+            padding-top: 20px;
+        }
+        .output-group {
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .output-group label {
+            font-weight: bold;
+            flex: 1;
+        }
+        .output-group span {
+            flex: 1;
+            text-align: right;
+            font-size: 1.1em;
+            color: #007bff;
+        }
+        .section-header {
+            background-color: #e2e6ea;
+            padding: 10px;
+            border-radius: 4px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            color: #333;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>BRRRR Investment Calculator</h1>
+
+        <div class="section-header">Property & Initial Investment</div>
+        <div class="input-group">
+            <label for="propertyAddress">Property Address/Name:</label>
+            <input type="text" id="propertyAddress" value="123 Main St">
+        </div>
+        <div class="input-group">
+            <label for="purchasePrice">Purchase Price ($):</label>
+            <input type="text" id="purchasePrice" value="150000" placeholder="e.g., 150000 or 150k">
+        </div>
+        <div class="input-group">
+            <label for="rehabCost">Rehab Cost ($):</label>
+            <input type="text" id="rehabCost" value="35000" placeholder="e.g., 35000 or 35k">
+        </div>
+        <div class="input-group">
+            <label for="closingCostsLoan1">Closing Costs (Loan 1 / Acquisition) ($):</label>
+            <input type="text" id="closingCostsLoan1" value="5000" placeholder="e.g., 5000 or 5k">
+        </div>
+        <div class="input-group">
+            <label for="arv">After Repair Value (ARV) ($):</label>
+            <input type="text" id="arv" value="250000" placeholder="e.g., 250000 or 250k">
+        </div>
+
+        <div class="section-header">Hard Money Loan (Loan 1) Details</div>
+        <div class="input-group">
+            <label for="downPaymentLoan1">Down Payment (Loan 1 / % of Purchase Price):</label>
+            <input type="number" id="downPaymentLoan1" value="10">
+        </div>
+        <div class="input-group">
+            <label for="interestRateLoan1">Interest Rate (Loan 1 / %):</label>
+            <input type="number" id="interestRateLoan1" value="12">
+        </div>
+        <div class="input-group">
+            <label for="rehabPeriodLength">Rehab Period Length (Months):</label>
+            <input type="number" id="rehabPeriodLength" value="4">
+        </div>
+
+        <div class="section-header">Refinance Loan (Loan 2) Details</div>
+        <div class="input-group">
+            <label for="refinancePercentageLoan2">Refinance Percentage (Loan 2 / % of ARV):</label>
+            <input type="number" id="refinancePercentageLoan2" value="75">
+        </div>
+        <div class="input-group">
+            <label for="interestRateLoan2">Interest Rate (Loan 2 / %):</label>
+            <input type="number" id="interestRateLoan2" value="7">
+        </div>
+        <div class="input-group">
+            <label for="loanTermLoan2">Loan Term (Loan 2 / Years):</label>
+            <input type="number" id="loanTermLoan2" value="30">
+        </div>
+        <div class="input-group">
+            <label for="closingCostsLoan2">Closing Costs (Loan 2 / Refinance) ($):</label>
+            <input type="text" id="closingCostsLoan2" value="3000" placeholder="e.g., 3000 or 3k">
+        </div>
+
+        <div class="section-header">Monthly Operating Expenses (Post-Rehab)</div>
+        <div class="input-group">
+            <label for="estimatedMonthlyRent">Estimated Monthly Rent ($):</label>
+            <input type="text" id="estimatedMonthlyRent" value="2000" placeholder="e.g., 2000 or 2k">
+        </div>
+        <div class="input-group">
+            <label for="annualPropertyTax">Annual Property Tax ($):</label>
+            <input type="text" id="annualPropertyTax" value="3600" placeholder="e.g., 3600 or 3.6k">
+        </div>
+        <div class="input-group">
+            <label for="annualInsurance">Annual Insurance ($):</label>
+            <input type="text" id="annualInsurance" value="1200" placeholder="e.g., 1200 or 1.2k">
+        </div>
+        <div class="input-group">
+            <label for="propertyManagement">Property Management (% of Gross Rent):</label>
+            <input type="number" id="propertyManagement" value="8">
+        </div>
+        <div class="input-group">
+            <label for="maintenance">Maintenance (% of Gross Rent):</label>
+            <input type="number" id="maintenance" value="5">
+        </div>
+        <div class="input-group">
+            <label for="vacancy">Vacancy (% of Gross Rent):</label>
+            <input type="number" id="vacancy" value="5">
+        </div>
+
+        <button onclick="calculateBRRRR()">Calculate BRRRR</button>
+
+        <div class="output-section">
+            <h2>Investment Summary</h2>
+            <div class="output-group"><label>Total Initial Investment:</label><span id="outputTotalInitialInvestment"></span></div>
+            <div class="output-group"><label>Hard Money Loan Amount:</label><span id="outputHardMoneyLoanAmount"></span></div>
+            <div class="output-group"><label>Monthly Interest-Only Payment (Hard Money):</label><span id="outputMonthlyInterestOnlyPaymentHML"></span></div>
+            <div class="output-group"><label>Holding Costs During Rehab:</label><span id="outputHoldingCostsDuringRehab"></span></div>
+            <div class="output-group"><label>Total Out-of-Pocket:</label><span id="outputTotalOutOfPocket"></span></div>
+            <div class="output-group"><label>Refinance Loan Amount (Loan 2):</label><span id="outputRefinanceLoanAmount"></span></div>
+            <div class="output-group"><label>Money Left from Loan 2:</label><span id="outputMoneyLeftFromLoan2"></span></div>
+            <div class="output-group"><label>Cash Left in the Deal:</label><span id="outputCashLeftInTheDeal"></span></div>
+            <div class="output-group"><label>Calculated Proposed Buying Price:</label><span id="outputProposedBuyingPrice"></span></div>
+            <div class="output-group"><label>Equity Created Based on ARV:</label><span id="outputEquityCreatedARV"></span></div>
+
+            <h2>Rental and Returns</h2>
+            <div class="output-group"><label>Monthly P&I Payment (Refinance Loan):</label><span id="outputMonthlyPIPaymentRefi"></span></div>
+            <div class="output-group"><label>Estimated Monthly Operating Expenses:</label><span id="outputMonthlyOperatingExpenses"></span></div>
+            <div class="output-group"><label>Estimated Monthly Cash Flow (After Refinance):</label><span id="outputMonthlyCashFlow"></span></div>
+            <div class="output-group"><label>Estimated Annual Cash Flow:</label><span id="outputAnnualCashFlow"></span></div>
+            <div class="output-group"><label>Cash-on-Cash Return:</label><span id="outputCashOnCashReturn"></span></div>
+        </div>
+    </div>
+
+    <script>
+        function parseInput(value) {
+            if (typeof value === 'string') {
+                value = value.toLowerCase().trim();
+                if (value.startsWith('$')) {
+                    return parseFloat(value.substring(1).replace(/,/g, ''));
+                }
+                if (value.endsWith('k')) {
+                    return parseFloat(value.slice(0, -1)) * 1000;
+                }
+                return parseFloat(value);
+            }
+            return parseFloat(value); // For number inputs
+        }
+
+        function formatCurrency(amount) {
+            return '$' + parseFloat(amount).toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+        }
+
+        function formatPercentage(value) {
+            return parseFloat(value).toFixed(2) + '%';
+        }
+
+        function calculateBRRRR() {
+            // Property & Initial Investment
+            const purchasePrice = parseInput(document.getElementById('purchasePrice').value);
+            const rehabCost = parseInput(document.getElementById('rehabCost').value);
+            const closingCostsLoan1 = parseInput(document.getElementById('closingCostsLoan1').value);
+            const arv = parseInput(document.getElementById('arv').value);
+
+            // Hard Money Loan (Loan 1) Details
+            const downPaymentLoan1 = parseFloat(document.getElementById('downPaymentLoan1').value);
+            const interestRateLoan1 = parseFloat(document.getElementById('interestRateLoan1').value);
+            const rehabPeriodLength = parseInt(document.getElementById('rehabPeriodLength').value);
+
+            // Refinance Loan (Loan 2) Details
+            const refinancePercentageLoan2 = parseFloat(document.getElementById('refinancePercentageLoan2').value);
+            const interestRateLoan2 = parseFloat(document.getElementById('interestRateLoan2').value);
+            const loanTermLoan2 = parseInt(document.getElementById('loanTermLoan2').value);
+            const closingCostsLoan2 = parseInput(document.getElementById('closingCostsLoan2').value);
+
+            // Monthly Operating Expenses (Post-Rehab)
+            const estimatedMonthlyRent = parseInput(document.getElementById('estimatedMonthlyRent').value);
+            const annualPropertyTax = parseInput(document.getElementById('annualPropertyTax').value);
+            const annualInsurance = parseInput(document.getElementById('annualInsurance').value);
+            const propertyManagement = parseFloat(document.getElementById('propertyManagement').value);
+            const maintenance = parseFloat(document.getElementById('maintenance').value);
+            const vacancy = parseFloat(document.getElementById('vacancy').value);
+
+            // --- Calculations ---
+
+            // 1. Total Initial Investment
+            const totalInitialInvestment = (purchasePrice * (downPaymentLoan1 / 100)) + closingCostsLoan1;
+
+            // 2. Hard Money Loan Amount
+            const hardMoneyLoanAmount = (purchasePrice * (1 - downPaymentLoan1 / 100)) + rehabCost;
+
+            // 3. Monthly Interest-Only Payment (Hard Money)
+            const monthlyInterestOnlyPaymentHML = hardMoneyLoanAmount * (interestRateLoan1 / 100) / 12;
+
+            // 4. Holding Costs During Rehab
+            const interestDuringRehab = monthlyInterestOnlyPaymentHML * rehabPeriodLength;
+            const propertyTaxDuringRehab = (annualPropertyTax / 12) * rehabPeriodLength;
+            const insuranceDuringRehab = (annualInsurance / 12) * rehabPeriodLength;
+            const holdingCostsDuringRehab = interestDuringRehab + propertyTaxDuringRehab + insuranceDuringRehab;
+
+            // 5. Total Out-of-Pocket
+            const totalOutOfPocket = totalInitialInvestment + holdingCostsDuringRehab;
+
+            // 6. Refinance Loan Amount (Loan 2)
+            const refinanceLoanAmount = arv * (refinancePercentageLoan2 / 100);
+
+            // 7. Money Left from Loan 2 (after paying off Loan 1 and closing costs)
+            const moneyLeftFromLoan2 = refinanceLoanAmount - hardMoneyLoanAmount - closingCostsLoan2;
+
+            // 8. Cash Left in the Deal
+            const cashLeftInTheDeal = totalOutOfPocket - moneyLeftFromLoan2;
+
+            // 9. Calculated Proposed Buying Price
+            const proposedBuyingPrice = purchasePrice - cashLeftInTheDeal;
+
+            // 10. Equity Created Based on ARV
+            const equityCreatedARV = arv - refinanceLoanAmount;
+
+            // 11. Monthly P&I Payment (Refinance Loan) - using standard mortgage formula
+            const r = (interestRateLoan2 / 100) / 12; // Monthly interest rate
+            const n = loanTermLoan2 * 12; // Total number of payments
+            let monthlyPIPaymentRefi;
+            if (r === 0) { // Handle zero interest rate
+                monthlyPIPaymentRefi = refinanceLoanAmount / n;
+            } else {
+                monthlyPIPaymentRefi = refinanceLoanAmount * (r * Math.pow(1 + r, n)) / (Math.pow(1 + r, n) - 1);
+            }
+
+            // 12. Estimated Monthly Operating Expenses (Post-Rehab, excluding mortgage)
+            const monthlyPropertyTax = annualPropertyTax / 12;
+            const monthlyInsurance = annualInsurance / 12;
+            const monthlyPropertyManagement = estimatedMonthlyRent * (propertyManagement / 100);
+            const monthlyMaintenance = estimatedMonthlyRent * (maintenance / 100);
+            const monthlyVacancy = estimatedMonthlyRent * (vacancy / 100);
+            const monthlyOperatingExpenses = monthlyPropertyTax + monthlyInsurance + monthlyPropertyManagement + monthlyMaintenance + monthlyVacancy;
+
+            // 13. Estimated Monthly Cash Flow (After Refinance)
+            const monthlyCashFlow = estimatedMonthlyRent - monthlyPIPaymentRefi - monthlyOperatingExpenses;
+
+            // 14. Estimated Annual Cash Flow
+            const annualCashFlow = monthlyCashFlow * 12;
+
+            // 15. Cash-on-Cash Return
+            let cashOnCashReturn;
+            if (cashLeftInTheDeal <= 0) {
+                cashOnCashReturn = "Infinite Return";
+            } else {
+                cashOnCashReturn = (annualCashFlow / cashLeftInTheDeal) * 100;
+            }
+
+            // --- Display Results ---
+            document.getElementById('outputTotalInitialInvestment').textContent = formatCurrency(totalInitialInvestment);
+            document.getElementById('outputHardMoneyLoanAmount').textContent = formatCurrency(hardMoneyLoanAmount);
+            document.getElementById('outputMonthlyInterestOnlyPaymentHML').textContent = formatCurrency(monthlyInterestOnlyPaymentHML);
+            document.getElementById('outputHoldingCostsDuringRehab').textContent = formatCurrency(holdingCostsDuringRehab);
+            document.getElementById('outputTotalOutOfPocket').textContent = formatCurrency(totalOutOfPocket);
+            document.getElementById('outputRefinanceLoanAmount').textContent = formatCurrency(refinanceLoanAmount);
+            document.getElementById('outputMoneyLeftFromLoan2').textContent = formatCurrency(moneyLeftFromLoan2);
+            document.getElementById('outputCashLeftInTheDeal').textContent = formatCurrency(cashLeftInTheDeal);
+            document.getElementById('outputProposedBuyingPrice').textContent = formatCurrency(proposedBuyingPrice);
+            document.getElementById('outputEquityCreatedARV').textContent = formatCurrency(equityCreatedARV);
+            document.getElementById('outputMonthlyPIPaymentRefi').textContent = formatCurrency(monthlyPIPaymentRefi);
+            document.getElementById('outputMonthlyOperatingExpenses').textContent = formatCurrency(monthlyOperatingExpenses);
+            document.getElementById('outputMonthlyCashFlow').textContent = formatCurrency(monthlyCashFlow);
+            document.getElementById('outputAnnualCashFlow').textContent = formatCurrency(annualCashFlow);
+            document.getElementById('outputCashOnCashReturn').textContent = typeof cashOnCashReturn === 'string' ? cashOnCashReturn : formatPercentage(cashOnCashReturn);
+        }
+
+        // Run calculation with default values on load
+        window.onload = calculateBRRRR;
+    </script>
+</body>
+</html>
